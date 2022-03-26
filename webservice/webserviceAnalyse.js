@@ -1,13 +1,11 @@
-$('document').ready(function () {
-    let url = 'http://localhost:8080/';
+let url = 'http://localhost:8080/';
 
-    function ajoutAunalyse(dataJson){
-        $.ajax({
-            url: url + 'analyse' ,
-            data : dataJson,
-            method: 'POST'
-        })
-            .done((data)=> {})
-            .fail((data) => {})
-    }
-})
+export default function ajoutAnalyse(dataJson){
+    $.ajax({
+        url: url + 'analyse' ,
+        data : dataJson,
+        method: 'POST'
+    })
+        .done((data)=> {})
+        .fail((data) => {})
+}
