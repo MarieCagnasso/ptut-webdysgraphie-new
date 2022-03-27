@@ -1,4 +1,4 @@
-let url = 'http://localhost:8081/api/';
+let url = 'http://localhost:8081/';
 function analysechoice(choix){
     let oldtoken = localStorage.getItem('token')
     if (oldtoken!=''){

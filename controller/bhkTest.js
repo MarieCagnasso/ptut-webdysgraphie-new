@@ -2,9 +2,152 @@ function startTest(){
     if(localStorage.getItem("analyse")==="BHK") {
         $( "#container" ).load( "page/bhkTest.html" , function (){
             startTimer();
+            initCanvas();
         });
     } else $( "#container" ).load( "page/consignePangramme.html" );
 }
+
+//---------------------------CANVAS
+
+let d = false;
+let td= 0;
+let tf = 0;
+let te = 0;
+
+//change pen color
+function changeColor(){
+    color = '#'+(Math.random()*0xFFFFFF<<0).toString(16);
+}
+
+//récupérer pression
+Pressure.set('#canvas_draw', {
+    change: function(force, evt0){
+        chronoOn();
+        $.ajax({
+            type:'post',
+            url:'/addPression',
+            data: {
+                "pression":force
+            },
+            error:function(resultat,statut,error){
+                console.log("error pression")
+            }
+        });
+    }
+}, {polyfill: true});
+
+// start drawing
+function moveDrawligne(oEvent){
+    var oCanvas = oEvent.currentTarget,
+        oCtx = null, oPos = null;
+    if(oCanvas.bDraw ==false){
+        return false;
+    }//if
+    oPos = getPosition(oEvent, oCanvas);
+    oCtx = oCanvas.getContext('2d');
+
+    //dessine
+    oCtx.strokeStyle = color;
+    oCtx.lineWidth = 1;
+    oCtx.beginPath();
+    oCtx.moveTo((oCanvas.posX), oCanvas.posY);
+    oCtx.lineTo(oPos.posX, oPos.posY);
+    oCtx.stroke();
+
+    oCanvas.posX = oPos.posX;
+    oCanvas.posY = oPos.posY;
+}
+
+function getPosition(oEvent, oCanvas){
+    var oRect = oCanvas.getBoundingClientRect(),
+        oEventEle = oEvent.changedTouches? oEvent.changedTouches[0]:oEvent;
+    var x = (oEventEle.clientX - oRect.left) / (oRect.right - oRect.left) * oCanvas.width;
+    var y =(oEventEle.clientY - oRect.top) / (oRect.bottom - oRect.top) * oCanvas.height;
+    $.ajax({
+        type:'post',
+        url:'/addPoint',
+        data: {
+            "pointX":parseInt(x),
+            "pointY":parseInt(y)
+        },
+        error:function(resultat,statut,error){
+            console.log(error.responseText)
+        }
+    });
+    return {
+        posX : x,
+        posY : y
+    };
+}
+
+function downDrawligne(oEvent){
+    t1 = Date.now();
+    changeColor();
+    oEvent.preventDefault();
+    var  oCanvas = oEvent.currentTarget,
+        oPos = getPosition(oEvent, oCanvas);
+    oCanvas.posX = oPos.posX;
+    oCanvas.posY = oPos.posY;
+    oCanvas.bDraw = true;
+    capturer(false);
+}
+
+function upDrawligne(oEvent){
+    t2 = Date.now()
+    te = te + (t2-t1)
+    var oCanvas = oEvent.currentTarget;
+    oCanvas.bDraw = false;
+    capturer(true);
+}
+
+function initCanvas(){
+    var oCanvas = document.getElementById("canvas_draw");
+    oCanvas.bDraw = false;
+    oCtx = oCanvas.getContext('2d');
+    oCanvas.addEventListener("mousedown", downDrawligne);
+    oCanvas.addEventListener("mouseup", upDrawligne);
+    oCanvas.addEventListener("mousemove", moveDrawligne);
+    oCanvas.addEventListener("touchstart", downDrawligne);
+    oCanvas.addEventListener("touchend", upDrawligne);
+    oCanvas.addEventListener("touchmove", moveDrawligne);
+}
+/**
+ * Récupère le canva sous forme d'image
+ */
+function capturer(bAction){
+    var oCapture = document.getElementById("capture_canvas");
+    oCapture.innerHTML = '';
+    if(bAction == true){
+        var oImage = document.createElement('img'),
+            oCanvas = document.getElementById("canvas_draw");
+        oImage.src = oCanvas.toDataURL("image/png");
+        oCapture.appendChild(oImage);
+    }
+}
+
+/**
+ * Vide les dessin du canvas
+ */
+function nettoyer(oEvent){
+    var  oCanvas = document.getElementById("canvas_draw"),
+        oCtx = oCanvas.getContext('2d');
+    oCtx.clearRect(0,0,oCanvas.width,oCanvas.height);
+    capturer(false);
+
+    $.ajax({
+        url: '/erase',
+        success: function (response) {
+            console.log("Canvas effacé");
+        }
+    });
+}
+
+// remove callback function when mouse up
+canvas_draw.onmouseup = function(evt) {
+    canvas_draw.onmousemove = {};
+};
+
+//---------------------------TIMER
 
 function startTimer(){
     const textCorrection = (element, value) => {

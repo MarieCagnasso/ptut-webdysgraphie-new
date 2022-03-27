@@ -7,6 +7,7 @@ canvas{
     background: white;
     height: 100%;
     width: 100%;
+    min-height: 800px;
 }
 .minutes,
 .seconds {
