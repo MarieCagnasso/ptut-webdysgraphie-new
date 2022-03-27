@@ -1,0 +1,14 @@
+.countdown {
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+}
+canvas{
+    background: white;
+    height: 100%;
+    width: 100%;
+}
+.minutes,
+.seconds {
+    font-size: 3rem;
+}

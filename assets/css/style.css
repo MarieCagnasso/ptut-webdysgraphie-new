@@ -28,6 +28,12 @@ body {
     width: 10%;
 }
 
+.text-consigne{
+    overflow:scroll;
+    border:#000000 1px solid;
+
+}
+
 footer {
     background-color: #E77655;
     position: fixed;
@@ -40,3 +46,13 @@ footer {
 footer a {
     padding-left:25px;
 }
+
+
+#calimero {
+    position: absolute;
+    right: 0;
+    bottom: 36%;
+    width: 250px;
+}
+
+
