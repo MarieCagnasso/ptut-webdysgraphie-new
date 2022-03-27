@@ -1,29 +1,26 @@
-// If anyone going through my code then it might look kind of messy to you coz I'm a beginner 😅, your suggestions, improvements(making the code shorter) will be welcomed 😇. Thank You!
-
-// getting Display minutes and seconds elements
-const disMinutes = document.querySelector(".minute");
-const disSeconds = document.querySelector(".seconds");
-
-const circleSvg = document.querySelector("circle");
-
-// making the timer
-let interval;
-let totalTime;
-
-function textCorrection(element, value) {
-    element.innerHTML = value < 10 ? "0" + value : value;
+function startTest(){
+    if(localStorage.getItem("analyse")==="BHK") {
+        $( "#container" ).load( "page/bhkTest.html" , function (){
+            startTimer();
+        });
+    } else $( "#container" ).load( "page/consignePangramme.html" );
 }
 
-// making the start button work
-export default function start (){
-    console.log('start')
-    totalTime = 5 * 60 ;
-
-    circleSvg.style.animation = `Loop ${totalTime}s linear 1s`;
-    circleSvg.style.animationPlayState = "running";
+function startTimer(){
+    const textCorrection = (element, value) => {
+        element.innerHTML = value < 10 ? "0" + value : value;
+    }
+    let disMinutes = document.querySelector(".minute");
+    let disSeconds = document.querySelector(".seconds");
+    let circleSvg = document.querySelector("circle");
+    let interval;
+// Temps du timer
+    let totalTime = 5 * 60 ;
     disMinutes.innerHTML = "00";
     disSeconds.innerHTML = "00";
 
+    circleSvg.style.animation = `Loop ${totalTime}s linear 1s`;
+    circleSvg.style.animationPlayState = "running";
 
     interval = setInterval(() => {
         const minutes = Math.floor(totalTime / 60);
@@ -49,9 +46,9 @@ export default function start (){
             totalTime--;
         } else {
             circleSvg.style.animation = "none";
+            alert("Temps écoulé.")
+            clearInterval(interval);
         }
     }, 1000);
-
-
     return totalTime;
 }

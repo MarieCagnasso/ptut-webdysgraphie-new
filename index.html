@@ -13,7 +13,6 @@
             crossorigin="anonymous"></script>
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/pageTest.css">
-    <link rel="stylesheet" href="assets/css/gnome.css">
     <link rel="stylesheet" href="assets/css/timer.css">
 </head>
 <body>
@@ -26,15 +25,24 @@
     </div>
 </nav>
 <div class="container-fluid" id="container">
+    <div class="text-center">
+        <h1 class="m-3" > Évaluez votre écriture !</h1>
+        <h2 class="m-3">Analysez et examinez la précision de votre écriture grâce aux tests de détection de la dysgraphie
+            <br>Quel test désirez-vous faire ?</h2>
+        <button class="btn btn-danger" onclick="analysechoice('BHK')">BHK</button>
+        <button class="btn btn-danger " onclick="analysechoice('BHKADO')">BHK ADO</button>
+        <button class="btn btn-danger " onclick="analysechoice('cinematique')">Pangramme</button>
+    </div>
 </div>
 <footer> <a href="">Mentions légales</a></footer>
 </body>
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twig.js/1.15.4/twig.min.js" integrity="sha512-zPrJDVxUaY6Qy2gi7gjHBw9Og/XQekExTDl3eFy2IibT0MVhx7vtsbjzPorSGp85+7uByxqzHyph77CRuYv5Kg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<!--<script src="vendor/js/twig.min.js"></script>-->
-<!--<script type="module" src="assets/js/timer.js"/>-->
-<script src="app.js"/>
-<script src="assets/js/metrognome.js"/>
-<script type="module" src="webservice/webserviceAnalyse.js"/>
+<script  src="controller/analyseChoix.js"></script>
+<script  src="controller/autorisation.js"></script>
+<script  src="controller/bhkTest.js"></script>
+<script src="controller/materiel.js"></script>
+<script src="controller/patient.js"></script>
+<script src="controller/resultats.js"></script>
 
 </html>

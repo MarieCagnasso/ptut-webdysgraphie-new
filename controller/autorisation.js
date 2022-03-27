@@ -1,6 +1,4 @@
-let url = 'http://localhost:8080/';
-
-export default function ajoutAutorisation(dataJson){
+function ajoutAutorisation(dataJson){
     $.ajax({
         url: url + 'autorisation' ,
         data : dataJson,
@@ -8,4 +6,9 @@ export default function ajoutAutorisation(dataJson){
     })
         .done((data)=> {})
         .fail((data) => {})
+}
+
+function autorisation(){
+    // ajoutAnalyse({});
+    $( "#container" ).load( "page/infoPatient.html" );
 }
